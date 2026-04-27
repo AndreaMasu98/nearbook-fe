@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Loan } from '../models/loan.interface';
+import { environment } from '../../environments/environment';
 
 /* Questo servizio gestisce tutte le operazioni relative ai prestiti, come richiedere un prestito, ottenere i prestiti ricevuti e aggiornare lo stato di un prestito. */  
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl || 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 

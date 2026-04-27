@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.interface';
 import { BookDetail } from '../models/book-detail.interface';
+import { environment } from '../../environments/environment';
 
 /* Questo servizio gestisce tutte le operazioni relative ai libri, come ottenere i libri vicini, i dettagli di un libro, creare un nuovo libro, eliminare un libro e ottenere statistiche. */
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl || 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
