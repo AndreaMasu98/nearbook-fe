@@ -1,0 +1,88 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <a routerLink="/home" class="text-gray-700 hover:underline">Torna alla ricerca</a>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-6" *ngIf="book">
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+        <!-- Copertina -->
+        <div class="md:col-span-1">
+          <div class="bg-gray-200 rounded-lg overflow-hidden h-80 flex items-center justify-center">
+            <img *ngIf="book.cover_path" [src]="book.cover_path" alt="{{ book.titolo }}" class="w-full h-full object-cover">
+            <span *ngIf="!book.cover_path" class="text-gray-500">Nessuna copertina</span>
+          </div>
+          
+          <div class="mt-4 flex gap-2">
+            <button (click)="requestLoan()" class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">
+              Richiedi Prestito
+            </button>
+          </div>
+        </div>
+
+        <!-- Dettagli -->
+        <div class="md:col-span-2">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ book.titolo }}</h1>
+          <p class="text-lg text-gray-600 mb-4">di <strong>{{ book.autore }}</strong> ({{ book.anno }})</p>
+          
+          <div class="grid grid-cols-2 gap-4 mb-6 pb-6 border-b">
+            <div>
+              <p class="text-sm text-gray-600">Categoria</p>
+              <p class="font-semibold text-gray-900">{{ book.categoria }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Disponibilità</p>
+              <p class="font-semibold" [ngClass]="book.disponibile ? 'text-gray-900' : 'text-gray-700'">
+                {{ book.disponibile ? 'Disponibile' : 'Non disponibile' }}
+              </p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Visualizzazioni</p>
+              <p class="font-semibold text-gray-900">{{ book.visualizzazioni }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Distanza</p>
+              <p class="font-semibold text-gray-900">{{ (book.distanza_metri! / 1000).toFixed(1) }} km</p>
+            </div>
+          </div>
+
+          <!-- Proprietario -->
+          <div class="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-6">
+            <p class="text-sm text-gray-600 mb-2">Proprietario del libro</p>
+            <div class="flex items-center">
+              <div>
+                <p class="font-semibold text-gray-900">{{ book.utente_nome }} {{ book.utente_cognome }}</p>
+                <p class="text-sm text-gray-600">Contatta per i dettagli del prestito</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descrizione -->
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">Descrizione</h2>
+            <p class="text-gray-700 leading-relaxed">{{ book.descrizione || 'Nessuna descrizione disponibile' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal richiesta prestito -->
+    <div *ngIf="showLoanModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Richiedi prestito</h3>
+        <textarea [(ngModel)]="loanMessage" placeholder="Inserisci un messaggio opzionale..." class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 h-24"></textarea>
+        <div class="flex gap-2">
+          <button (click)="confirmLoan()" class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">Invia richiesta</button>
+          <button (click)="showLoanModal = false" class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 rounded-lg">Annulla</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!book" class="max-w-4xl mx-auto px-4 py-6">
+    <p class="text-center text-gray-500">Caricamento...</p>
+  </div>
+</div>
