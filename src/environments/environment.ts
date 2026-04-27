@@ -3,7 +3,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: process.env['NG_APP_API_URL'] || 'http://localhost:3000/api',
+  apiUrl: 'http://localhost:3000/api',
   appName: 'NearBook',
   appVersion: '1.0.0',
   enableAnalytics: false,
