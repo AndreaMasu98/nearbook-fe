@@ -1,0 +1,115 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-900">Il mio Profilo</h1>
+      <a routerLink="/home" class="text-gray-700 hover:underline">Torna a Home</a>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Profilo Utente -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-1">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-gray-200 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center text-3xl">
+          </div>
+          <h2 class="text-2xl font-bold text-center text-gray-900">{{ (currentUser$ | async)?.nome }} {{ (currentUser$ | async)?.cognome }}</h2>
+          <p class="text-center text-gray-600 mt-2">{{ (currentUser$ | async)?.email }}</p>
+          
+          <div class="mt-6 pt-6 border-t">
+            <div class="text-center mb-4">
+              <p class="text-sm text-gray-600">Statistiche</p>
+              <p class="text-2xl font-bold text-gray-900">{{ stats?.libri_totali || 0 }}</p>
+              <p class="text-xs text-gray-600">Libri caricati</p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600">Visualizzazioni</p>
+              <p class="text-2xl font-bold text-gray-900">{{ stats?.visualizzazioni_totali || 0 }}</p>
+              <p class="text-xs text-gray-600">Visite ai tuoi libri</p>
+            </div>
+          </div>
+
+          <button (click)="logout()" class="w-full mt-6 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">
+            Esci
+          </button>
+        </div>
+      </div>
+
+      <!-- Richieste Ricevute -->
+      <div class="md:col-span-2">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <div class="p-6 border-b bg-gray-50">
+            <h2 class="text-xl font-semibold text-gray-900">Richieste di Prestito Ricevute</h2>
+            <p class="text-sm text-gray-600">{{ receivedLoans.length }} richieste</p>
+          </div>
+
+          <div *ngIf="receivedLoans.length === 0" class="p-6 text-center text-gray-500">
+            Nessuna richiesta di prestito al momento
+          </div>
+
+          <div *ngFor="let loan of receivedLoans" class="border-b p-6 hover:bg-gray-50">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-gray-900">{{ loan.titolo }}</h3>
+                <p class="text-sm text-gray-600">{{ loan.autore }}</p>
+              </div>
+              <span [ngClass]="'px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800'">
+                {{ loan.stato }}
+              </span>
+            </div>
+
+            <p class="text-sm text-gray-700 mb-3">
+              Richiesto da: <strong>{{ loan.richiedente_nome }} {{ loan.richiedente_cognome }}</strong>
+            </p>
+
+            <div *ngIf="loan.messaggio" class="bg-gray-100 border border-gray-300 rounded p-3 mb-3 text-sm">
+              <p class="text-gray-700">{{ loan.messaggio }}</p>
+            </div>
+
+            <div *ngIf="loan.stato === 'pendente'" class="flex gap-2">
+              <button (click)="acceptLoan(loan.id)" class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">
+                Accetta
+              </button>
+              <button (click)="rejectLoan(loan.id)" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded-lg">
+                Rifiuta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- I Miei Libri -->
+    <div class="mt-6 bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6 border-b bg-gray-50 flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-semibold text-gray-900">I Miei Libri</h2>
+          <p class="text-sm text-gray-600">{{ myBooks.length }} libri caricati</p>
+        </div>
+        <button routerLink="/add-book" class="bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-lg font-semibold">
+          Carica un libro
+        </button>
+      </div>
+
+      <div *ngIf="myBooks.length === 0" class="p-6 text-center text-gray-500">
+        Non hai ancora caricato alcun libro. <a routerLink="/add-book" class="text-gray-700 hover:underline">Condividi il tuo primo libro!</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+        <div *ngFor="let book of myBooks" class="border rounded-lg overflow-hidden hover:shadow-lg transition">
+          <div class="bg-gray-300 h-40 flex items-center justify-center">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-900 truncate">{{ book.titolo }}</h3>
+            <p class="text-sm text-gray-600 truncate">{{ book.autore }}</p>
+            <div class="mt-3 flex gap-2">
+              <button class="flex-1 text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 py-1 rounded">Modifica</button>
+              <button class="flex-1 text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 py-1 rounded">Rimuovi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
