@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { LoanService } from '../../services/loan.service';
 import { BookDetail } from '../../models/book-detail.interface';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-book-detail',
@@ -58,5 +59,12 @@ export class BookDetailComponent implements OnInit {
         alert('Errore: ' + err.error?.error);
       }
     });
+  }
+
+  getImageUrl(path: string | null): string {
+    if (!path) return 'assets/placeholder-book.png';
+    if (path.startsWith('http')) return path;
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/uploads/${path}`;
   }
 }

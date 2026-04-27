@@ -12,7 +12,7 @@
         <!-- Copertina -->
         <div class="md:col-span-1">
           <div class="bg-gray-200 rounded-lg overflow-hidden h-80 flex items-center justify-center">
-            <img *ngIf="book.cover_path" [src]="book.cover_path" alt="{{ book.titolo }}" class="w-full h-full object-cover">
+          <img *ngIf="book.cover_path" [src]="getImageUrl(book.cover_path)" alt="{{ book.titolo }}" class="w-full h-full object-cover">
             <span *ngIf="!book.cover_path" class="text-gray-500">Nessuna copertina</span>
           </div>
           
