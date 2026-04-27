@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.interface';
 import { BookDetail } from '../models/book-detail.interface';
@@ -24,8 +24,9 @@ export class BookService {
   }
 
   /* Ottiene i dettagli di un libro specifico dato il suo ID. Restituisce un Observable che emette un oggetto contenente i dettagli del libro. */
-  getBookById(id: number): Observable<{ book: BookDetail }> {
-    return this.http.get<{ book: BookDetail }>(`${this.apiUrl}/books/${id}`);
+  getBookById(id: number, lat?: number, lng?: number): Observable<{ book: BookDetail }> {
+    const query = lat !== undefined && lng !== undefined ? `?lat=${lat}&lng=${lng}` : '';
+    return this.http.get<{ book: BookDetail }>(`${this.apiUrl}/books/${id}${query}`);
   }
 
   /* Crea un nuovo libro con i dati forniti. */
