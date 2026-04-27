@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
+/* Questa guardia è utilizzata per proteggere le rotte che richiedono l'autenticazione */
 @Injectable({
   providedIn: 'root'
 })
