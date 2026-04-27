@@ -40,7 +40,7 @@ export class BookService {
 
   /* Aggiorna un libro dato il suo ID. */
   updateBook(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/books/${id}`, data);
+    return this.http.patch(`${this.apiUrl}/books/${id}`, data);
   }
 
   /* Elimina un libro dato il suo ID. */
