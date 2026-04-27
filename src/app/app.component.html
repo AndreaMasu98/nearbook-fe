@@ -1,9 +1,10 @@
-<div class="flex flex-col min-h-screen">
+<!-- Utilizzo ngClass per gestire dinamicamente le classi CSS se l'utente è autenticato -->
+<!-- Se l'utente è autenticato faccio vedere la navbar e il footer -->
+<div class="flex flex-col"
+     [ngClass]="(isAuthenticated$ | async) ? 'min-h-screen' : 'h-screen overflow-hidden'">
   <app-navbar *ngIf="isAuthenticated$ | async"></app-navbar>
-  <main class="flex-grow overflow-hidden">
+  <main class="flex-1" [class.overflow-y-auto]="!(isAuthenticated$ | async)">
     <router-outlet></router-outlet>
   </main>
   <app-footer *ngIf="isAuthenticated$ | async"></app-footer>
 </div>
-
-
