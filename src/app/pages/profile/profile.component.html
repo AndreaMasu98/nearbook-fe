@@ -12,7 +12,13 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="md:col-span-1">
         <div class="bg-white rounded-lg shadow p-6">
-          <div class="bg-gray-200 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center text-3xl">
+          <!-- Avatar Placeholder - in produzione si potrebbe usare un avatar reale, ma per ora utilizzo un placeholder da un'immagine fissa. Lo mantengo in quanto migliora l'estetica generale -->
+          <div class="bg-gray-200 rounded-full w-24 h-24 mx-auto mb-4 overflow-hidden flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="50" fill="#D1D5DB"/>
+              <circle cx="50" cy="38" r="18" fill="#9CA3AF"/>
+              <ellipse cx="50" cy="85" rx="28" ry="22" fill="#9CA3AF"/>
+            </svg>
           </div>
           <h2 class="text-2xl font-bold text-center text-gray-900">{{ (currentUser$ | async)?.nome }} {{ (currentUser$ | async)?.cognome }}</h2>
           <p class="text-center text-gray-600 mt-2">{{ (currentUser$ | async)?.email }}</p>
@@ -29,10 +35,6 @@
               <p class="text-xs text-gray-600">Visite ai tuoi libri</p>
             </div>
           </div>
-
-          <button (click)="logout()" class="w-full mt-6 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">
-            Esci
-          </button>
         </div>
       </div>
 
@@ -68,10 +70,10 @@
             </div>
 
             <div *ngIf="loan.stato === 'pendente'" class="flex gap-2">
-              <button (click)="acceptLoan(loan.id)" class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg">
+              <button (click)="acceptLoan(loan.id)" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg">
                 Accetta
               </button>
-              <button (click)="rejectLoan(loan.id)" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded-lg">
+              <button (click)="rejectLoan(loan.id)" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg">
                 Rifiuta
               </button>
             </div>
