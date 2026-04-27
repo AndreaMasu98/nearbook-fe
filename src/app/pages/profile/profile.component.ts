@@ -6,6 +6,7 @@ import { LoanService } from '../../services/loan.service';
 import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book.interface';
 import { Loan } from '../../models/loan.interface';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +18,10 @@ import { Loan } from '../../models/loan.interface';
 export class ProfileComponent implements OnInit {
   currentUser$ = this.authService.currentUser$;
   receivedLoans: Loan[] = [];
-  myBooks: Book[] = [];
+  myBooks: any[] = [];
   stats: any = null;
+  loadingBooks = false;
+  deleteConfirm: { [key: number]: boolean } = {};
 
   constructor(
     private bookService: BookService,
@@ -31,7 +34,6 @@ export class ProfileComponent implements OnInit {
     this.loadData();
   }
 
-  /* Carica le richieste di prestito ricevute e le statistiche dell'utente. In caso di errore, logga l'errore sulla console */
   loadData(): void {
     this.loanService.getReceivedLoans().subscribe({
       next: (response) => {
@@ -40,16 +42,59 @@ export class ProfileComponent implements OnInit {
       error: (err) => console.error('Errore caricamento richieste', err)
     });
 
+    // Carica statistiche
     this.bookService.getMyStats().subscribe({
       next: (response) => {
         this.stats = response;
-        this.myBooks = response.libri || [];
       },
       error: (err) => console.error('Errore caricamento statistiche', err)
     });
+
+    // Carica i miei libri
+    this.loadingBooks = true;
+    this.bookService.getMyBooks().subscribe({
+      next: (response) => {
+        this.myBooks = response.books;
+        this.loadingBooks = false;
+      },
+      error: (err) => {
+        console.error('Errore caricamento libri', err);
+        this.loadingBooks = false;
+      }
+    });
   }
 
-  /* Accetta una richiesta di prestito, aggiornando lo stato della richiesta tramite il servizio di prestiti. */
+  getImageUrl(path: string | null): string {
+    if (!path) return 'assets/placeholder-book.png';
+    if (path.startsWith('http')) return path;
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/uploads/${path}`;
+  }
+
+  editBook(bookId: number): void {
+    // Reindirizza a una pagina di edit (da implementare)
+    this.router.navigate(['/edit-book', bookId]);
+  }
+
+  deleteBook(bookId: number): void {
+    if (!this.deleteConfirm[bookId]) {
+      this.deleteConfirm[bookId] = true;
+      return;
+    }
+
+    this.bookService.deleteBook(bookId).subscribe({
+      next: () => {
+        alert('Libro eliminato con successo!');
+        this.loadData();
+      },
+      error: (err) => alert('Errore eliminazione: ' + (err.error?.error || 'Errore sconosciuto'))
+    });
+  }
+
+  cancelDelete(bookId: number): void {
+    this.deleteConfirm[bookId] = false;
+  }
+
   acceptLoan(id: number): void {
     this.loanService.updateLoanStatus(id, 'accettata').subscribe({
       next: () => {
@@ -60,7 +105,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  /* Rifiuta una richiesta di prestito, aggiornando lo stato della richiesta tramite il servizio di prestiti. */
   rejectLoan(id: number): void {
     this.loanService.updateLoanStatus(id, 'rifiutata').subscribe({
       next: () => {
@@ -71,7 +115,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  /* Effettua il logout dell'utente, chiamando il servizio di autenticazione e reindirizzando alla pagina di login */
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

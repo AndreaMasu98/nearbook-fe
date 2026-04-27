@@ -23,16 +23,18 @@
           <h2 class="text-2xl font-bold text-center text-gray-900">{{ (currentUser$ | async)?.nome }} {{ (currentUser$ | async)?.cognome }}</h2>
           <p class="text-center text-gray-600 mt-2">{{ (currentUser$ | async)?.email }}</p>
           
-          <div class="mt-6 pt-6 border-t">
+          <div class="mt-4 pt-4 border-t">
             <div class="text-center mb-4">
-              <p class="text-sm text-gray-600">Statistiche</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats?.libri_totali || 0 }}</p>
+              <p class="text-2xl font-bold text-gray-900">{{ stats?.totale_libri || 0 }}</p>
               <p class="text-xs text-gray-600">Libri caricati</p>
             </div>
-            <div class="text-center">
-              <p class="text-sm text-gray-600">Visualizzazioni</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats?.visualizzazioni_totali || 0 }}</p>
+            <div class="text-center  mb-4">
+              <p class="text-2xl font-bold text-gray-900">{{ stats?.totale_visualizzazioni || 0 }}</p>
               <p class="text-xs text-gray-600">Visite ai tuoi libri</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-gray-900">{{ stats?.totale_richieste || 0 }}</p>
+              <p class="text-xs text-gray-600">Richieste di prestito</p>
             </div>
           </div>
         </div>
@@ -56,7 +58,12 @@
                 <h3 class="font-semibold text-gray-900">{{ loan.titolo }}</h3>
                 <p class="text-sm text-gray-600">{{ loan.autore }}</p>
               </div>
-              <span [ngClass]="'px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800'">
+              <span [ngClass]="{
+                'px-3 text-white py-1 rounded-full text-xs font-semibold': true,
+                'bg-red-500 ': loan.stato === 'rifiutata',
+                'bg-green-500': loan.stato === 'accettata',
+                'bg-gray-500': loan.stato !== 'rifiutata' && loan.stato !== 'accettata'
+              }">
                 {{ loan.stato }}
               </span>
             </div>
@@ -99,15 +106,55 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-        <div *ngFor="let book of myBooks" class="border rounded-lg overflow-hidden hover:shadow-lg transition">
-          <div class="bg-gray-300 h-40 flex items-center justify-center">
+        <div *ngIf="loadingBooks" class="col-span-full text-center text-gray-600">
+          Caricamento libri in corso...
+        </div>
+        
+        <div *ngFor="let book of myBooks" class="border rounded-lg overflow-hidden hover:shadow-lg transition flex flex-col">
+          <!-- Copertina -->
+          <div class="bg-gray-300 h-40 overflow-hidden flex items-center justify-center">
+            <img *ngIf="book.cover_path" 
+                 [src]="getImageUrl(book.cover_path)" 
+                 alt="{{ book.titolo }}" 
+                 class="w-full h-full object-cover">
+            <span *ngIf="!book.cover_path" class="text-gray-500 text-sm">Nessuna copertina</span>
           </div>
-          <div class="p-4">
+          
+          <!-- Dettagli -->
+          <div class="p-4 flex-1 flex flex-col">
             <h3 class="font-semibold text-gray-900 truncate">{{ book.titolo }}</h3>
-            <p class="text-sm text-gray-600 truncate">{{ book.autore }}</p>
-            <div class="mt-3 flex gap-2">
-              <button class="flex-1 text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 py-1 rounded">Modifica</button>
-              <button class="flex-1 text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 py-1 rounded">Rimuovi</button>
+            <p class="text-sm text-gray-600 truncate mb-2">{{ book.autore }}</p>
+            <div class="text-xs text-gray-500 mb-3">
+              <p>Visualizzazioni: {{ book.visualizzazioni }}</p>
+              <p>Disponibile: {{ book.disponibile ? 'S' : 'No' }}</p>
+            </div>
+            
+            <!-- Azioni -->
+            <div class="mt-auto flex gap-2">
+              <button 
+                (click)="editBook(book.id)"
+                class="flex-1 text-sm bg-orange-400 text-white hover:bg-orange-500 py-1 rounded transition">
+                Modifica
+              </button>
+              <div *ngIf="!deleteConfirm[book.id]" class="flex-1">
+                <button 
+                  (click)="deleteBook(book.id)"
+                  class="w-full text-sm bg-red-500 hover:bg-red-600 text-white py-1 rounded transition">
+                  Rimuovi
+                </button>
+              </div>
+              <div *ngIf="deleteConfirm[book.id]" class="flex-1 flex gap-1">
+                <button 
+                  (click)="deleteBook(book.id)"
+                  class="flex-1 text-xs bg-red-500 text-white hover:bg-red-600 py-1 rounded transition">
+                  Conferma
+                </button>
+                <button 
+                  (click)="cancelDelete(book.id)"
+                  class="flex-1 text-xs bg-gray-300 text-gray-800 hover:bg-gray-400 py-1 rounded transition">
+                  Annulla
+                </button>
+              </div>
             </div>
           </div>
         </div>

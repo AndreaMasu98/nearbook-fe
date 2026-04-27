@@ -33,6 +33,16 @@ export class BookService {
     return this.http.post(`${this.apiUrl}/books`, data);
   }
 
+  /* Ottiene i libri caricati dall'utente loggato. */
+  getMyBooks(): Observable<{ books: BookDetail[] }> {
+    return this.http.get<{ books: BookDetail[] }>(`${this.apiUrl}/books/my-books`);
+  }
+
+  /* Aggiorna un libro dato il suo ID. */
+  updateBook(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/books/${id}`, data);
+  }
+
   /* Elimina un libro dato il suo ID. */
   deleteBook(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/books/${id}`);

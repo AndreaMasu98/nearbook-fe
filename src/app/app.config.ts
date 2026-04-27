@@ -5,6 +5,7 @@ import { provideHttpClient, HTTP_INTERCEPTORS, withInterceptorsFromDi } from '@a
 import { routes } from './app.routes';
 import { ApiInterceptor } from './services/api.interceptor';
 
+/* Questo file contiene la configurazione principale dell'applicazione, inclusa la definizione delle rotte e l'aggiunta dell'interceptor per le richieste HTTP. */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),

@@ -1,0 +1,182 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Modifica Libro</h1>
+      <p class="text-gray-600">Aggiorna i dettagli del tuo libro</p>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <!-- Loading -->
+    <div *ngIf="bookLoading" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-800">
+      Caricamento del libro in corso...
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="success" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-800">
+      {{ success }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700">
+      {{ error }}
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-lg shadow p-8" *ngIf="!bookLoading">
+      <form [formGroup]="editBookForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Row 1: Titolo e Autore -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Titolo</label>
+            <input
+              formControlName="titolo"
+              type="text"
+              placeholder="es. Il Signore degli Anelli"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gray-500"
+            />
+            <p *ngIf="editBookForm.get('titolo')?.invalid && editBookForm.get('titolo')?.touched"
+               class="text-xs text-gray-600 mt-1">
+              Titolo obbligatorio (minimo 3 caratteri)
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Autore</label>
+            <input
+              formControlName="autore"
+              type="text"
+              placeholder="es. J.R.R. Tolkien"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gray-500"
+            />
+            <p *ngIf="editBookForm.get('autore')?.invalid && editBookForm.get('autore')?.touched"
+               class="text-xs text-gray-600 mt-1">
+              Autore obbligatorio (minimo 2 caratteri)
+            </p>
+          </div>
+        </div>
+
+        <!-- Row 2: Anno e Categoria -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Anno</label>
+            <input
+              formControlName="anno"
+              type="text"
+              placeholder="es. 1954"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gray-500"
+            />
+            <p *ngIf="editBookForm.get('anno')?.invalid && editBookForm.get('anno')?.touched"
+               class="text-xs text-gray-600 mt-1">
+              Usa formato YYYY (es. 2024)
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
+            <select
+              formControlName="categoria"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gray-500"
+            >
+              <option value="">Seleziona una categoria</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            <p *ngIf="editBookForm.get('categoria')?.invalid && editBookForm.get('categoria')?.touched"
+               class="text-xs text-gray-600 mt-1">
+              Categoria obbligatoria
+            </p>
+          </div>
+        </div>
+
+        <!-- Descrizione -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Descrizione</label>
+          <textarea
+            formControlName="descrizione"
+            placeholder="Scrivi una breve descrizione del libro (facoltativo)"
+            rows="4"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gray-500"
+          ></textarea>
+          <p class="text-xs text-gray-600 mt-1">
+            {{ (editBookForm.get('descrizione')?.value || '').length }}/500 caratteri
+          </p>
+        </div>
+
+        <!-- Disponibile -->
+        <div>
+          <label class="flex items-center text-sm font-medium text-gray-700 cursor-pointer">
+            <input
+              formControlName="disponibile"
+              type="checkbox"
+              class="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-500"
+            />
+            <span class="ml-2">Libro disponibile per il prestito</span>
+          </label>
+        </div>
+
+        <!-- Cover Image Upload -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Copertina del Libro</label>
+          <p class="text-xs text-gray-600 mb-2">Clicca per caricare una nuova copertina (facoltativo)</p>
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition"
+               (click)="coverInput.click()">
+            <div *ngIf="!coverFile && !coverPreview" class="text-gray-500">
+              <p class="font-medium">Clicca per caricare la copertina</p>
+              <p class="text-xs mt-1">Formato: JPG, PNG</p>
+            </div>
+            <div *ngIf="coverPreview" class="relative">
+              <img [src]="coverPreview" alt="Cover preview" class="h-32 mx-auto rounded">
+              <button
+                type="button"
+                *ngIf="coverFile"
+                (click)="removeCover(); $event.stopPropagation()"
+                class="mt-2 px-3 py-1 bg-gray-300 text-gray-800 rounded text-sm hover:bg-gray-400"
+              >
+                Rimuovi
+              </button>
+            </div>
+          </div>
+          <input
+            #coverInput
+            type="file"
+            accept="image/*"
+            (change)="onCoverSelected($event)"
+            class="hidden"
+          />
+        </div>
+
+        <!-- Location Info (Read-only) -->
+        <div class="bg-gray-100 border border-gray-300 rounded-lg p-4">
+          <p class="text-sm font-medium text-gray-800 mb-2">Geolocalizzazione (non modificabile)</p>
+          <div *ngIf="lat && lng" class="text-sm text-gray-700">
+            <p>Latitudine: <strong>{{ lat.toFixed(6) }}</strong></p>
+            <p>Longitudine: <strong>{{ lng.toFixed(6) }}</strong></p>
+          </div>
+          <div *ngIf="!lat || !lng" class="text-sm text-gray-600">
+            <p>Geolocalizzazione non disponibile</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-2 pt-4">
+          <button
+            type="submit"
+            [disabled]="editBookForm.invalid || loading"
+            class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            {{ loading ? 'Aggiornamento...' : 'Salva Modifiche' }}
+          </button>
+          <button
+            type="button"
+            (click)="cancel()"
+            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 rounded-lg transition"
+          >
+            Annulla
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
