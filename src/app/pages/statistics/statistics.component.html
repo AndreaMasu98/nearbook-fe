@@ -1,0 +1,132 @@
+<div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Le Tue Statistiche</h1>
+      <p class="text-lg text-gray-600">Visualizza le tue attività di condivisione libri</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-12">
+      <div class="inline-block">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        <p class="mt-4 text-gray-600">Caricamento statistiche...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+      <div *ngIf="error && !loading" class="bg-gray-100 border border-gray-300 text-gray-700 px-6 py-4 rounded-lg mb-8">
+        <p class="font-semibold">Errore</p>
+      <p>{{ error }}</p>
+    </div>
+
+    <!-- Statistics Content -->
+    <div *ngIf="statistics && !loading" class="space-y-8">
+      <!-- Main Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Books -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Libri Caricati</p>
+              <p class="text-4xl font-bold text-gray-900 mt-2">{{ statistics.totale_libri }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Views -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Visualizzazioni Totali</p>
+              <p class="text-4xl font-bold text-gray-900 mt-2">{{ statistics.totale_visualizzazioni }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Requests -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Richieste Ricevute</p>
+              <p class="text-4xl font-bold text-gray-900 mt-2">{{ statistics.totale_richieste }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Average Views -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Media Visualizzazioni</p>
+              <p class="text-4xl font-bold text-gray-900 mt-2">
+                {{ getAverageViews() | number:'1.1' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Books by Category -->
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          I Tuoi Libri per Categoria
+        </h2>
+        
+        <div *ngIf="statistics.per_categoria && statistics.per_categoria.length > 0; else noCategories" class="space-y-6">
+          <div *ngFor="let category of statistics.per_categoria" class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-gray-700 capitalize">
+                {{ category.categoria || 'Senza categoria' }}
+              </span>
+              <span class="text-lg font-bold text-gray-900">{{ category.count }}</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div 
+                class="bg-gradient-to-r from-gray-700 to-gray-900 h-3 rounded-full transition-all duration-500"
+                [style.width.%]="getPercentageWidth(category.count)"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noCategories>
+          <div class="text-center py-8 text-gray-500">
+            <p class="text-lg">Non hai ancora caricato libri</p>
+            <p class="text-sm">Inizia a condividere i tuoi libri!</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="bg-gradient-to-r from-gray-700 to-gray-900 rounded-xl shadow-lg p-8 text-white">
+        <h3 class="text-2xl font-bold mb-6">Resoconto della Tua Attività</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white bg-opacity-10 backdrop-blur p-6 rounded-lg">
+            <p class="text-gray-200 text-sm mb-2">Engagement</p>
+            <p class="text-3xl font-bold">
+              {{ getEngagementRate() | number:'1.0' }}%
+            </p>
+            <p class="text-xs text-gray-200 mt-2">Richieste per libro</p>
+          </div>
+          
+          <div class="bg-white bg-opacity-10 backdrop-blur p-6 rounded-lg">
+            <p class="text-gray-200 text-sm mb-2">Popolarità Media</p>
+            <p class="text-3xl font-bold">
+              {{ getAverageViews() | number:'1.0' }}
+            </p>
+            <p class="text-xs text-gray-200 mt-2">Visualizzazioni per libro</p>
+          </div>
+
+          <div class="bg-white bg-opacity-10 backdrop-blur p-6 rounded-lg">
+            <p class="text-gray-200 text-sm mb-2">Categoria Principale</p>
+            <p class="text-3xl font-bold">
+              {{ getMainCategory() }}
+            </p>
+            <p class="text-xs text-gray-200 mt-2">La più rappresentata</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
