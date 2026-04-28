@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
+/* Questo componente gestisce la pagina di login. Permette all'utente di inserire email e password per accedere al proprio account. Se le credenziali sono corrette, l'utente viene reindirizzato alla home page. In caso contrario, viene mostrato un messaggio di errore. Il form di login utilizza validazioni per assicurarsi che l'email sia in formato valido e che la password abbia almeno 6 caratteri. */
 @Component({
   selector: 'app-login',
   standalone: true,

@@ -1,0 +1,64 @@
+<div class="max-w-4xl mx-auto px-4 py-12 text-gray-900 bg-white">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
+    <p class="text-lg text-gray-600">Ultimo aggiornamento: Aprile 2026</p>
+  </div>
+
+  <div class="space-y-12 leading-relaxed text-lg pt-8">
+    
+    <section>
+      <h2 class="text-2xl font-bold mb-4 uppercase tracking-wide">1. Introduzione</h2>
+      <p>
+        NearBook è un prototipo funzionale sviluppato da Andrea Masu come elaborato per il corso di "Informatica per le Aziende Digitali" presso l'Università Telematica Pegaso. La piattaforma mira a connettere lettori geograficamente vicini per la condivisione del patrimonio librario privato. 
+      </p>
+      <p class="mt-4">
+        Questa Privacy Policy è stata redatta autonomamente applicando le conoscenze maturate nel corso di "Diritto per le Aziende Digitali" per garantire la trasparenza nel trattamento dei dati.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 uppercase tracking-wide">2. Dati che Raccogliamo</h2>
+      <p class="mb-4">Raccogliamo solo i dati strettamente necessari al funzionamento del servizio:</p>
+      <ul class="list-disc ml-6 space-y-3">
+        <li><strong>Informazioni di Profilo:</strong> Nome, cognome e indirizzo email per l'identificazione e l'autenticazione.</li>
+        <li><strong>Dati di Accesso:</strong> Password gestita tramite algoritmi di cifratura lato backend.</li>
+        <li><strong>Geolocalizzazione:</strong> Coordinate GPS associate al profilo utente, memorizzate nel database come tipo GEOMETRY (Point, 4326) tramite l'estensione PostGIS. Nel prototipo attuale, la posizione è statica e non offuscata.</li>
+        <li><strong>Dati Librari:</strong> Titoli, autori e immagini di copertina (elaborate tramite libreria Sharp per l'ottimizzazione).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 uppercase tracking-wide">3. Cookie e Tecnologie</h2>
+      <p class="mb-4">L'applicativo NearBook adotta un approccio "Cookie-Free":</p>
+      <ul class="list-disc ml-6 space-y-3">
+        <li><strong>Assenza di Cookie:</strong> Non viene fatto alcun utilizzo di cookie per il tracciamento o la gestione delle sessioni.</li>
+        <li><strong>LocalStorage:</strong> Utilizziamo il LocalStorage del browser per memorizzare le preferenze dell'utente e il token di autenticazione.</li>
+        <li><strong>JWT (JSON Web Token):</strong> Un token salvato localmente garantisce la sicurezza degli accessi alle rotte protette e l'identificazione dell'utente nelle chiamate API.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 uppercase tracking-wide">4. Dove risiedono i tuoi dati</h2>
+      <p class="mb-4">I dati vengono elaborati e conservati in un'infrastruttura moderna:</p>
+      <ul class="list-disc ml-6 space-y-3">
+        <li><strong>Hosting:</strong> Il sistema è ospitato sulla piattaforma cloud Render.</li>
+        <li><strong>Database:</strong> PostgreSQL gestito tramite istanze dirette su Render.</li>
+        <li><strong>Immagini:</strong> Caricate tramite middleware Multer e salvate in una cartella statica interna al server di backend.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 uppercase tracking-wide">5. I Tuoi Diritti (GDPR)</h2>
+      <p>
+        In conformità al GDPR, l'utente può richiedere in qualsiasi momento l'accesso, la rettifica o la cancellazione dei propri dati personali. Essendo un progetto prototipale, ogni richiesta può essere inoltrata direttamente allo sviluppatore.
+      </p>
+    </section>
+
+    <section class="pt-8 border-t border-gray-200">
+      <h2 class="text-xl font-bold mb-4">Contatti</h2>
+      <p>Per domande riguardanti la privacy:</p>
+      <p class="mt-1">Email: {{'andrea.masu@studenti.unipegaso.it'}} </p>
+      <p class="mt-1">Sviluppatore: Andrea Masu (Matr. 0312402211) </p>
+    </section>
+  </div>
+</div>
