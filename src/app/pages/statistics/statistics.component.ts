@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 
 export interface MyStatistics {
@@ -13,10 +12,11 @@ export interface MyStatistics {
   }>;
 }
 
+/* Il componente StatisticsComponent gestisce la pagina delle statistiche personali dell'utente. Recupera le statistiche dall'API tramite il BookService e le visualizza in modo chiaro e intuitivo. Include anche una sezione che mostra la distribuzione dei libri per categoria, con barre di progresso che indicano la percentuale rispetto alla categoria più popolata. */
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })

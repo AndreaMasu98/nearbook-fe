@@ -1,5 +1,4 @@
 <div class="min-h-screen bg-gray-50">
-  <!-- Header -->
   <header class="bg-white shadow">
     <div class="max-w-4xl mx-auto px-4 py-4">
       <h1 class="text-3xl font-bold text-gray-900 mb-2">Carica un Libro</h1>
@@ -8,17 +7,17 @@
   </header>
 
   <div class="max-w-4xl mx-auto px-4 py-6">
-    <!-- Success Message -->
+    <!-- Messaggio di Successo -->
     <div *ngIf="success" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-800">
       {{ success }}
     </div>
 
-    <!-- Error Message -->
+    <!-- Messaggio di Errore -->
     <div *ngIf="error" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700">
       {{ error }}
     </div>
 
-    <!-- Location Warning -->
+    <!-- Errore Geolocalizzazione -->
     <div *ngIf="locationError" class="mb-6 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700">
       {{ locationError }}
     </div>
@@ -27,7 +26,7 @@
     <div class="bg-white rounded-lg shadow p-8">
       <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()" class="space-y-6">
         
-        <!-- Row 1: Titolo e Autore -->
+        <!-- Titolo e Autore -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Titolo</label>
@@ -58,7 +57,7 @@
           </div>
         </div>
 
-        <!-- Row 2: Anno e Categoria -->
+        <!-- Anno e Categoria -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Anno</label>
@@ -104,7 +103,7 @@
           </p>
         </div>
 
-        <!-- Cover Image Upload -->
+        <!-- Upload Copertina -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Copertina del Libro</label>
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition"
@@ -133,7 +132,7 @@
           />
         </div>
 
-        <!-- Location Info -->
+        <!-- Info Geolocalizzazione -->
         <div class="bg-gray-100 border border-gray-300 rounded-lg p-4">
           <p class="text-sm font-medium text-gray-800 mb-2">Geolocalizzazione</p>
           <div *ngIf="lat && lng" class="text-sm text-gray-700">
@@ -145,7 +144,7 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Carica libro o annulla -->
         <div class="flex gap-2 pt-4">
           <button
             type="submit"

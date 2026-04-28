@@ -1,6 +1,6 @@
 <div class="flex h-full w-full overflow-hidden">
 
-  <!-- Left Side -->
+  <!-- Sinistra -->
   <div class="hidden md:flex md:w-5/12 flex-col justify-between p-10 bg-gray-50 border-r border-gray-100">
     <div class="text-gray-900 font-medium text-sm">NearBook</div>
 
@@ -38,11 +38,11 @@
     </div>
   </div>
 
-  <!-- Right Side -->
+  <!-- Destra -->
   <div class="flex-1 bg-white flex items-center justify-center px-8 overflow-y-auto">
     <div class="w-full max-w-sm py-10">
 
-      <!-- Mobile logo -->
+      <!-- Logo -->
       <div class="md:hidden mb-8">
         <p class="text-xl font-medium text-gray-900">NearBook</p>
       </div>
@@ -50,7 +50,7 @@
       <h1 class="text-2xl font-medium text-gray-900 mb-1">Bentornato</h1>
       <p class="text-sm text-gray-400 mb-8">Accedi al tuo account per continuare.</p>
 
-      <!-- Error -->
+      <!-- Errore -->
       <div *ngIf="error" class="mb-6 px-4 py-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-500">
         {{ error }}
       </div>
@@ -87,7 +87,7 @@
           </p>
         </div>
 
-        <!-- Remember & Forgot -->
+        <!-- Ricorda e password dimenticata -->
         <div class="flex items-center justify-between">
           <label class="flex items-center gap-2 cursor-pointer select-none">
             <input type="checkbox" class="w-3.5 h-3.5 rounded border-gray-200" />
@@ -98,7 +98,7 @@
           </a>
         </div>
 
-        <!-- Submit -->
+        <!-- Accedi -->
         <button
           type="submit"
           [disabled]="loading || loginForm.invalid"
@@ -110,14 +110,14 @@
 
       </form>
 
-      <!-- Divider -->
+      <!-- Divisore ui -->
       <div class="flex items-center gap-3 my-5">
         <hr class="flex-1 border-gray-100" />
         <span class="text-xs text-gray-300">oppure</span>
         <hr class="flex-1 border-gray-100" />
       </div>
 
-      <!-- Register -->
+      <!-- Registrati -->
       <p class="text-center text-sm text-gray-400">
         Non hai un account?
         <a routerLink="/register" class="text-gray-900 font-medium hover:underline">Registrati</a>

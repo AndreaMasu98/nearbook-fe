@@ -6,6 +6,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { AuthService } from './services/auth.service';
 import { Observable } from 'rxjs';
 
+/* Il componente AppComponent è il componente principale dell'applicazione, che contiene la struttura generale del layout con la navbar, il footer e il router outlet per le pagine. Gestisce anche lo stato di autenticazione dell'utente per mostrare o nascondere la navbar e il footer in base alla rotta corrente e allo stato di autenticazione. Utilizza il servizio di autenticazione per ottenere le informazioni sull'utente e gestire lo stato di autenticazione. */
 @Component({
   selector: 'app-root',
   standalone: true,

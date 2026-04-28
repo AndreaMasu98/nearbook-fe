@@ -9,6 +9,7 @@ import * as L from 'leaflet';
 import { Book } from '../../models/book.interface';
 import { Location } from '../../models/location.interface';
 
+/* Il componente HomeComponent è la pagina principale dell'applicazione, dove gli utenti possono cercare libri nelle vicinanze e visualizzarli su una mappa. Utilizza Leaflet per la visualizzazione della mappa e interagisce con i servizi di geolocalizzazione e gestione dei libri. */
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
+  /* Al caricamento del componente, inizializza la mappa e ottiene la posizione dell'utente per mostrare i libri nelle vicinanze. */
   ngOnInit(): void {
     const iconDefault = L.icon({
       iconUrl: 'assets/marker-icon.png',
@@ -53,6 +55,7 @@ export class HomeComponent implements OnInit {
     this.getCurrentLocation();
   }
 
+  /* Ottiene la posizione attuale dell'utente utilizzando il servizio di geolocalizzazione. Se la geolocalizzazione fallisce, imposta una posizione di default (Milano) e continua comunque a inizializzare la mappa e cercare i libri. */
   getCurrentLocation(): void {
     this.geoService.getCurrentLocation().subscribe({
       next: (location) => {
@@ -68,6 +71,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /* Inizializza la mappa Leaflet centrata sulla posizione dell'utente e aggiunge un marker per indicare la posizione. */
   initMap(): void {
     if (!this.userLocation || this.map) return;
 
@@ -97,6 +101,7 @@ export class HomeComponent implements OnInit {
     }, 100);
   }
 
+  /* Esegue la ricerca dei libri in base alla modalità selezionata (per nome o per distanza) e aggiorna la mappa con i risultati. Se la ricerca è per nome, utilizza il servizio di ricerca libri con il nome e la categoria. Se la ricerca è per distanza, utilizza il servizio di libri vicini con le coordinate dell'utente, il raggio e la categoria. In entrambi i casi, aggiorna i marker sulla mappa con i risultati ottenuti. */
   searchBooks(): void {
     // Ricerca per nome
     if (this.searchMode === 'name') {
@@ -120,6 +125,7 @@ export class HomeComponent implements OnInit {
     // Ricerca per distanza
     if (!this.userLocation) return;
 
+    // Se la ricerca è per distanza, utilizza il servizio di libri vicini con le coordinate dell'utente, il raggio e la categoria. In entrambi i casi, aggiorna i marker sulla mappa con i risultati ottenuti.
     this.bookService.getNearbyBooks(
       this.userLocation.latitude,
       this.userLocation.longitude,
@@ -136,6 +142,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /* Aggiorna i marker sulla mappa in base ai libri attualmente visualizzati. Rimuove i marker precedenti e ne aggiunge di nuovi per ogni libro nella lista. Se ci sono libri con coordinate valide, adatta la vista della mappa per includere tutti i marker e la posizione dell'utente. */
   updateMapMarkers(): void {
     if (!this.map) return;
 
@@ -148,6 +155,7 @@ export class HomeComponent implements OnInit {
 
       const marker = L.marker([book.latitudine, book.longitudine]).addTo(this.map!);
 
+      // Popup personalizzato con informazioni sul libro
       marker.bindPopup(`
         <div style="min-width:150px; font-family: sans-serif;">
           <p style="font-size:13px; font-weight:600; margin:0 0 2px;">${book.titolo}</p>
@@ -161,7 +169,7 @@ export class HomeComponent implements OnInit {
         </div>
       `);
 
-      // Click sul marker → evidenzia libro in lista
+      // Click sul marker: evidenzia libro in lista
       marker.on('click', () => {
         this.selectBook(book);
       });
@@ -191,6 +199,7 @@ export class HomeComponent implements OnInit {
     marker?.openPopup();
   }
 
+  /* Esegue il logout dell'utente utilizzando il servizio di autenticazione e reindirizza alla pagina di login. */
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

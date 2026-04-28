@@ -10,6 +10,7 @@ import { AddBookComponent } from './pages/add-book/add-book.component';
 import { EditBookComponent } from './pages/edit-book/edit-book.component';
 import { AuthGuard } from './guards/auth.guard';
 
+/* Questo file definisce le rotte dell'applicazione, associando ogni percorso a un componente specifico. Le rotte protette da AuthGuard richiedono che l'utente sia autenticato per accedervi. Le rotte pubbliche come login, register e privacy sono accessibili a tutti. La rotta wildcard '**' reindirizza a login per qualsiasi percorso non definito. */
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },

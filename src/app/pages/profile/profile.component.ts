@@ -8,6 +8,7 @@ import { Book } from '../../models/book.interface';
 import { Loan } from '../../models/loan.interface';
 import { environment } from '../../../environments/environment';
 
+/* Il componente ProfileComponent gestisce la pagina del profilo utente, dove l'utente può vedere i propri libri, le richieste di prestito ricevute e le statistiche. Permette anche di accettare o rifiutare le richieste di prestito e di eliminare i propri libri. Utilizza i servizi di BookService, LoanService e AuthService per interagire con l'API e gestire i dati dell'utente. */
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
     this.loadData();
   }
 
+  /* Carica i dati necessari per la pagina del profilo: le richieste di prestito ricevute, le statistiche e i libri dell'utente. Gestisce anche gli stati di caricamento e gli errori. */
   loadData(): void {
     this.loanService.getReceivedLoans().subscribe({
       next: (response) => {
@@ -64,6 +66,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /* Restituisce l'URL completo dell'immagine di copertina del libro. Se il percorso è null, restituisce un'immagine placeholder. Se il percorso è un URL completo, lo restituisce direttamente. Altrimenti, costruisce l'URL completo basato sul percorso relativo e l'URL base dell'API. */
   getImageUrl(path: string | null): string {
     if (!path) return 'assets/placeholder-book.png';
     if (path.startsWith('http')) return path;
@@ -71,11 +74,12 @@ export class ProfileComponent implements OnInit {
     return `${baseUrl}/uploads/${path}`;
   }
 
+  /* Naviga alla pagina di modifica del libro specificato. */
   editBook(bookId: number): void {
-    // Reindirizza a una pagina di edit (da implementare)
     this.router.navigate(['/edit-book', bookId]);
   }
 
+  /* Gestisce l'eliminazione di un libro. Se l'utente clicca per la prima volta sul pulsante di eliminazione, viene chiesto di confermare l'azione. Se l'utente conferma, viene inviata la richiesta di eliminazione al servizio. In caso di successo, viene ricaricata la lista dei libri. In caso di errore, viene mostrato un messaggio di errore. */
   deleteBook(bookId: number): void {
     if (!this.deleteConfirm[bookId]) {
       this.deleteConfirm[bookId] = true;
@@ -91,10 +95,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /* Annulla la conferma di eliminazione per un libro specifico. */
   cancelDelete(bookId: number): void {
     this.deleteConfirm[bookId] = false;
   }
 
+  /* Accetta una richiesta di prestito specificata dall'ID. In caso di successo, ricarica i dati del profilo e mostra un messaggio di conferma. In caso di errore, mostra un messaggio di errore. */
   acceptLoan(id: number): void {
     this.loanService.updateLoanStatus(id, 'accettata').subscribe({
       next: () => {
@@ -105,6 +111,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /* Rifiuta una richiesta di prestito specificata dall'ID. In caso di successo, ricarica i dati del profilo e mostra un messaggio di conferma. In caso di errore, mostra un messaggio di errore. */
   rejectLoan(id: number): void {
     this.loanService.updateLoanStatus(id, 'rifiutata').subscribe({
       next: () => {
@@ -115,6 +122,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /* Effettua il logout dell'utente, chiamando il servizio di autenticazione e reindirizzando alla pagina di login. */
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
+/* Questo componente gestisce la pagina di registrazione. Permette all'utente di inserire nome, cognome, email e password per creare un nuovo account. Se la registrazione ha successo, l'utente viene reindirizzato alla home page. In caso contrario, viene mostrato un messaggio di errore. Il form di registrazione utilizza validazioni per assicurarsi che tutti i campi siano compilati, che l'email sia in formato valido e che la password abbia almeno 6 caratteri. */
 @Component({
   selector: 'app-register',
   standalone: true,
