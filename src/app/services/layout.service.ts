@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class LayoutService {
   // Rotte che non mostrano navbar/footer
-  private publicRoutes = ['/login', '/register', '/privacy', '/cookies'];
+  private publicRoutes = ['/login', '/register', '/privacy'];
 
   constructor(private router: Router, private authService: AuthService) {}
 
