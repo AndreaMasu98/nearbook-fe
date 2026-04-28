@@ -23,6 +23,15 @@ export class BookService {
     return this.http.get<{ books: Book[] }>(`${this.apiUrl}/books${params}`);
   }
 
+  /* Ricerca libri per nome/autore. */
+  searchBooks(search: string, categoria?: string): Observable<{ books: Book[] }> {
+    let params = `?search=${encodeURIComponent(search)}`;
+    if (categoria && categoria !== 'tutti') {
+      params += `&categoria=${categoria}`;
+    }
+    return this.http.get<{ books: Book[] }>(`${this.apiUrl}/books${params}`);
+  }
+
   /* Ottiene i dettagli di un libro specifico dato il suo ID. Restituisce un Observable che emette un oggetto contenente i dettagli del libro. */
   getBookById(id: number, lat?: number, lng?: number): Observable<{ book: BookDetail }> {
     const query = lat !== undefined && lng !== undefined ? `?lat=${lat}&lng=${lng}` : '';

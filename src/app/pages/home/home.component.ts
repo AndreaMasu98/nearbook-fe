@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
   books: Book[] = [];
   raggio = 2000;
   categoria = 'tutti';
+  searchQuery = '';
+  searchMode: 'name' | 'distance' = 'distance'; // 'name' o 'distance'
   userLocation: Location | null = null;
   map: L.Map | null = null;
   currentUser$ = this.authService.currentUser$;
@@ -96,6 +98,26 @@ export class HomeComponent implements OnInit {
   }
 
   searchBooks(): void {
+    // Ricerca per nome
+    if (this.searchMode === 'name') {
+      if (!this.searchQuery.trim()) {
+        alert('Inserisci un nome per cercare');
+        return;
+      }
+
+      this.bookService.searchBooks(this.searchQuery, this.categoria).subscribe({
+        next: (response) => {
+          this.books = response.books;
+          this.updateMapMarkers();
+        },
+        error: (err) => {
+          console.error('Errore nel recupero libri:', err);
+        }
+      });
+      return;
+    }
+
+    // Ricerca per distanza
     if (!this.userLocation) return;
 
     this.bookService.getNearbyBooks(
